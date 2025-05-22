@@ -3,16 +3,15 @@ module amazing_gateway
 go 1.24.3
 
 require (
-	github.com/MathieuRocher/amazing_domain v0.0.0-20250522080306-a7f6690c5460
+	github.com/MathieuRocher/amazing_domain v0.0.0-20250522092856-9bb937df053e
 	github.com/gin-gonic/gin v1.10.1
 	github.com/go-playground/validator/v10 v10.20.0
 	github.com/golang-jwt/jwt/v5 v5.2.2
+	github.com/joho/godotenv v1.5.1
 	golang.org/x/crypto v0.23.0
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gorm v1.26.1
 )
-
-replace github.com/MathieuRocher/amazing_domain => ../amazing_domain
 
 require (
 	github.com/bytedance/sonic v1.11.6 // indirect

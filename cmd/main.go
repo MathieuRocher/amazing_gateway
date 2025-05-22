@@ -8,16 +8,36 @@ import (
 	"amazing_gateway/internal/auth"
 	"amazing_gateway/internal/infrastructure/database"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
 	router := gin.Default()
+
+	e := godotenv.Load()
+	if e != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	database.InitDB()
+	_ = database.DB.AutoMigrate(&repository.User{}, &repository.ClassGroup{})
+
+	reviewPort := os.Getenv("REVIEW_PORT")
+	if reviewPort == "" {
+		log.Fatal("REVIEW_PORT must be set in environment")
+	}
+
+	formPort := os.Getenv("FORM_PORT")
+	if formPort == "" {
+		log.Fatal("FORM_PORT must be set in environment")
+	}
 
 	// === Microservice URLs ===
-	reviewService := "http://localhost:8082"
-	formService := "http://localhost:8081"
+	reviewService := "http://localhost:" + reviewPort
+	formService := "http://localhost:8081" + formPort
 
 	// === Dépendances ===
 	userRepo := repository.NewUserRepository()
@@ -64,7 +84,11 @@ func main() {
 
 	}
 
-	if err := router.Run(":8080"); err != nil {
+	port := os.Getenv("GATEWAY_PORT")
+	if port == "" {
+		log.Fatal("GATEWAY_PORT must be set in environment")
+	}
+	if err := router.Run(":" + port); err != nil {
 		panic(err)
 	}
 }
