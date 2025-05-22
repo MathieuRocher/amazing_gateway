@@ -7,6 +7,7 @@ import (
 	"amazing_gateway/internal/adapter/repository"
 	"amazing_gateway/internal/auth"
 	"amazing_gateway/internal/infrastructure/database"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"log"
@@ -17,27 +18,22 @@ import (
 func main() {
 	router := gin.Default()
 
-	e := godotenv.Load()
-	if e != nil {
-		log.Fatal("Error loading .env file")
-	}
-
 	database.InitDB()
 	_ = database.DB.AutoMigrate(&repository.User{}, &repository.ClassGroup{})
 
+	_ = godotenv.Load()
+
+	reviewHost := os.Getenv("REVIEW_HOST")
 	reviewPort := os.Getenv("REVIEW_PORT")
-	if reviewPort == "" {
-		log.Fatal("REVIEW_PORT must be set in environment")
-	}
-
+	formHost := os.Getenv("FORM_HOST")
 	formPort := os.Getenv("FORM_PORT")
-	if formPort == "" {
-		log.Fatal("FORM_PORT must be set in environment")
+
+	if reviewHost == "" || reviewPort == "" || formHost == "" || formPort == "" {
+		log.Fatal("❌ REVIEW_HOST, REVIEW_PORT, FORM_HOST et FORM_PORT doivent être définis")
 	}
 
-	// === Microservice URLs ===
-	reviewService := "http://localhost:" + reviewPort
-	formService := "http://localhost:8081" + formPort
+	reviewService := fmt.Sprintf("http://%s:%s", reviewHost, reviewPort)
+	formService := fmt.Sprintf("http://%s:%s", formHost, formPort)
 
 	// === Dépendances ===
 	userRepo := repository.NewUserRepository()
