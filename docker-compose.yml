@@ -1,6 +1,3 @@
-version: '3.1'
-
-
 # Define services
 services:
   mariadb:
@@ -13,6 +10,8 @@ services:
       MARIADB_DATABASE: ${MARIADB_DATABASE}
     ports:
       - "3306:3306"
+    volumes:
+      - amazing_data:/var/lib/mysql
     networks:
       - db
 
@@ -36,3 +35,6 @@ services:
 networks:
   backend:  
   db:
+
+volumes:
+  amazing_data:
