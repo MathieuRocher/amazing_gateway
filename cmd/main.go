@@ -61,8 +61,8 @@ func main() {
 
 	// === Protected routes (with JWT middleware) ===
 	private := router.Group("/api")
-	private.Use(auth.JWTMiddleware())
 	private.Use(auth.CORSMiddleware())
+	private.Use(auth.JWTMiddleware())
 	{
 		userHandler.RegisterProtectedRoutes(private)
 		classGroupHandler.RegisterRoutes(private)
