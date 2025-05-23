@@ -47,6 +47,7 @@ func main() {
 	classGroupHandler := handler.NewClassGroupHandler(classGroupUC)
 
 	// apgeoerbo
+	//Adacczvvavav
 	// === Public routes ===
 	public := router.Group("/api")
 	{
