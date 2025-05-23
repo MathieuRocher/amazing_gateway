@@ -8,11 +8,12 @@ import (
 	"amazing_gateway/internal/auth"
 	"amazing_gateway/internal/infrastructure/database"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -45,6 +46,7 @@ func main() {
 	classGroupUC := application.NewClassGroupUseCase(classGroupRepo)
 	classGroupHandler := handler.NewClassGroupHandler(classGroupUC)
 
+	// apgeoerbo
 	// === Public routes ===
 	public := router.Group("/api")
 	{
