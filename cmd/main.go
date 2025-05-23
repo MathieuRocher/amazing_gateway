@@ -50,6 +50,7 @@ func main() {
 	//Adacczvvavav
 	// === Public routes ===
 	public := router.Group("/api")
+	public.Use(auth.CORSMiddleware())
 	{
 		public.GET("/", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"message": "hello world"})
@@ -61,6 +62,7 @@ func main() {
 	// === Protected routes (with JWT middleware) ===
 	private := router.Group("/api")
 	private.Use(auth.JWTMiddleware())
+	private.Use(auth.CORSMiddleware())
 	{
 		userHandler.RegisterProtectedRoutes(private)
 		classGroupHandler.RegisterRoutes(private)
